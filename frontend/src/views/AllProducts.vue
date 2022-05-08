@@ -1,32 +1,21 @@
 <template>
   <div class="flex flex-col justify-center items-center w-full">
+    <div class="m-16">
+      <label for="sortTypes">Sort By: </label>
+      <select
+        name="sortType"
+        id="sortTypes"
+        v-model="sortType"
+        class="border p-1 border-orange-300 rounded-md m-2 outline-orange-500"
+      >
+        <option value="default" selected disabled>default</option>
+        <option value="lowest">Lowest price</option>
+        <option value="highest">Highest price</option>
+      </select>
+    </div>
     <ul class="flex flex-wrap justify-center w-5/6 m-2">
-      <li v-for="product in products" :key="product.title">
-        <div
-          class="border rounded-md shadow-lg border-orange-300 w-72 py-2 m-2"
-        >
-          <div class="flex justify-center mt-4">
-            <img
-              :src="product.image"
-              :alt="product.title"
-              class="rounded-t-md w-32 h-32"
-            />
-          </div>
-          <div class="relative p-2">
-            <h1 class="text-orange-400 font-bold">
-              {{ product.title.substring(0, 20) }}...
-            </h1>
-            <span class="absolute top-2 right-2 font-bold text-orange-600">
-              ${{ product.price }}
-            </span>
-            <p class="font-medium text-sm text-gray-500">
-              category: {{ product.category }}
-            </p>
-            <p class="text-sm text-black text-opacity-50">
-              {{ product.description.substring(0, 100).toLowerCase() }}...
-            </p>
-          </div>
-        </div>
+      <li v-for="product in sortedProducts" :key="product.title">
+        <SingleProduct :product="product" />
       </li>
     </ul>
   </div>
@@ -34,10 +23,16 @@
 
 <script>
 import axios from "axios";
+import SingleProduct from "@/components/SingleProduct.vue";
+
 export default {
+  components: {
+    SingleProduct,
+  },
   data() {
     return {
       products: [],
+      sortType: "default",
     };
   },
   created() {
@@ -48,6 +43,16 @@ export default {
       .catch((err) => {
         console.log(err);
       });
+  },
+  computed: {
+    sortedProducts() {
+      if (this.sortType === "lowest") {
+        return [...this.products].sort((a, b) => a.price - b.price);
+      } else if (this.sortType === "highest") {
+        return [...this.products].sort((a, b) => b.price - a.price);
+      }
+      return this.products;
+    },
   },
 };
 </script>
