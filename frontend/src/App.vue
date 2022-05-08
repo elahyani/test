@@ -1,10 +1,15 @@
 <template>
-  <div id="app">Start</div>
+  <div id="app">
+    <AllProducts />
+  </div>
 </template>
 
 <script>
+import AllProducts from "@/views/AllProducts.vue";
 export default {
   name: "App",
-  components: {},
+  components: {
+    AllProducts,
+  },
 };
 </script>
