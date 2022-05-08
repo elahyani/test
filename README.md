@@ -22,6 +22,7 @@ Install the dependencies and devDependencies and start the server.
 ```sh
 cd test/frontend
 npm install
+npm run serve
 ```
 
 Verify the deployment by navigating to your server address in
